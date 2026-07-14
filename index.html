@@ -1,1 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dr. Adi's Multispeciality Dental Clinic</title>
+    <!-- FontAwesome Icons for Polish -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        /* ==========================================================================
+           1. CORE CONFIGURATION & VARIABLES
+           ========================================================================== */
+        :root {
+            --primary-blue: #0056b3;
+            --light-blue: #eef5fc;
+            --dark-text: #2b303a;
+            --light-bg: #ffffff;
+            --gray-text: #6c757d;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            color: var(--dark-text);
+            background-color: var(--light-bg);
+            line-height: 1.6;
+        }
+
+        .text-blue { color: var(--primary-blue); }
+
+        /* ==========================================================================
+           2. NAVIGATION BAR
+           ========================================================================== */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 8%;
+            background: #fff;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            font-weight: 700;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            line-height: 1.1;
+        }
+
+        .logo small { 
+            font-weight: 400; 
+            display: block; 
+            font-size: 10px; 
+            color: var(--gray-text);
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--dark-text);
+            margin: 0 15px;
+            font-weight: 500;
+            transition: 0.3s;
+        }
+
+        nav a:hover { color: var(--primary-blue); }
+
+        /* ==========================================================================
+           3. UI BUTTON SYSTEM
+           ========================================================================== */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: 0.3s transform ease;
+        }
+
+        .btn:active { transform: scale(0.95); }
+        .btn-primary { background-color: var(--primary-blue); color: #fff; }
+        .btn-secondary { background-color: var(--light-blue); color: var(--primary-blue); }
+
+        /* ==========================================================================
+           4. HERO DESIGN BLOCK
+           ========================================================================== */
+        .hero {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 60px 8%;
+            background: linear-gradient(135deg, #fff 60%, var(--light-blue) 100%);
+            min-height: 80vh;
+        }
+
+        .hero-content { max-width: 550px; }
+        .badge {
+            background: var(--light-blue);
+            color: var(--primary-blue);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .hero h1 { font-size: 48px; margin: 15px 0; line-height: 1.2; }
+        .hero p { color: var(--gray-text); margin-bottom: 30px; font-size: 18px; }
+        .hero-actions { display: flex; gap: 15px; }
+
+        .hero-image img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+        }
+
+        /* ==========================================================================
+           5. SERVICES SECTION GRID
+           ========================================================================== */
+        .services { padding: 80px 8%; background: #fafafa; }
+        .section-title { text-align: center; margin-bottom: 50px; }
+        .section-title span { color: var(--primary-blue); font-weight: 700; font-size: 14px; }
+        .section-title h2 { font-size: 32px; margin-top: 5px; }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .service-card {
+            background: #fff;
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.02);
+        }
+
+        .service-card img { width: 100%; height: auto; border-radius: 10px; margin-bottom: 20px; }
+        .service-card h3 { margin-bottom: 10px; }
+        .service-card p { color: var(--gray-text); font-size: 15px; }
+
+        /* ==========================================================================
+           6. GOOGLE REVIEWS SLIDER CAROUSEL
+           ========================================================================== */
+        .reviews-section { padding: 80px 8%; background: var(--light-blue); text-align: center; }
+        
+        .review-slider-container {
+            max-width: 600px;
+            margin: 0 auto;
+            position: relative;
+            min-height: 220px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .review-slide {
+            position: absolute;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+            width: 100%;
+            z-index: 1;
+        }
+
+        .review-slide.active { opacity: 1; transform: translateY(0); z-index: 2; }
+
+        .google-review-img {
+            max-width: 100%;
+            max-height: 190px;
+            object-fit: contain;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+            display: block;
+            margin: 0 auto;
+            background-color: #ffffff;
+        }
+
+        .slider-dots { display: flex; justify-content: center; gap: 8px; margin-top: 20px; }
+        .dot { width: 10px; height: 10px; background: #ccc; border-radius: 50%; cursor: pointer; transition: 0.3s; }
+        .dot.active { background: var(--primary-blue); width: 24px; border-radius: 5px; }
+
+        /* ==========================================================================
+           7. FOOTER STRUCTURE
+           ========================================================================== */
+        footer { background: #1a202c; color: #fff; padding: 60px 8% 20px; }
+        .footer-grid { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 30px; border-bottom: 1px solid #2d3748; padding-bottom: 40px; }
+        .footer-grid h3 { margin-bottom: 15px; font-size: 18px; color: var(--light-blue); }
+        .footer-grid p { color: #a0aec0; font-size: 15px; }
+        .footer-credit { text-align: center; padding-top: 20px; color: #718096; font-size: 14px; }
+
+        /* ==========================================================================
+           8. RESPONSIVE LAYOUT ENGINE (MOBILE MEDIA QUERIES)
+           ========================================================================== */
+        @media (max-width: 968px) {
+            .hero { flex-direction: column; text-align: center; gap: 40px; }
+            .hero-actions { justify-content: center; }
+            .navbar { padding: 20px 4%; }
+            .nav-btn { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header class="navbar">
+        <div class="logo">
+            <i class="fa-solid fa-tooth text-blue"></i>
+            <span>DR. ADI'S <small>MULTISPECIALITY DENTAL CLINIC</small></span>
+        </div>
+        <nav>
+            <a href="#home">Home</a>
+            <a href="#services">Services</a>
+            <a href="#reviews">Reviews</a>
+        </nav>
+        <a href="https://wa.me/917661049480" target="_blank" class="btn btn-primary nav-btn">Book Appointment</a>
+    </header>
+
+    <!-- Hero Framework -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <span class="badge">WE CARE FOR YOUR SMILE</span>
+            <h1>Confident Smile.<br><span class="text-blue">Better You.</span></h1>
+            <p>Hyderabad's top-rated 4.9★ multispeciality clinic providing advanced, painless dental care with clear, step-by-step treatment plans.</p>
+            <div class="hero-actions">
+                <a href="https://wa.me/917661049480" target="_blank" class="btn btn-primary"><i class="fa-brands fa-whatsapp"></i> Book Your Visit</a>
+                <a href="tel:+917661049480" class="btn btn-secondary"><i class="fa-solid fa-phone"></i> Call Studio</a>
+            </div>
+        </div>
+        <div class="hero-image">
+            <img src="dentist-hero.png" alt="Dr. Adilakshmi greeting a family patient">
+        </div>
+    </section>
+
+    <!-- Core Services Grid -->
+    <section id="services" class="services">
+        <div class="section-title">
+            <span>ADVANCED CARE</span>
+            <h2>Our Core Dental Services</h2>
+        </div>
+        <div class="services-grid">
+            <div class="service-card">
+                <img src="service-rootcanal.png" alt="Root Canal Treatment Process">
+                <h3>Root Canal Therapy</h3>
+                <p>Advanced diagnosis, precise pulp removal, and complete restoration for a painless bite.</p>
+            </div>
+            <div class="service-card">
+                <img src="service-implant.png" alt="Dental Implant Structure">
+                <h3>Dental Implants</h3>
+                <p>Premium titanium fixture placement and ceramic crowns engineered for long-term structural durability.</p>
+            </div>
+            <div class="service-card">
+                <img src="service-aligners.png" alt="Clear Aligners and Braces">
+                <h3>Smile Transformations</h3>
+                <p>Modern clear aligners and subtle ceramic braces tailored completely to your aesthetic vision.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Google Reviews Loop Block -->
+    <section id="reviews" class="reviews-section">
+        <div class="section-title">
+            <span>REAL RESULTS</span>
+            <h2>136+ Five-Star Google Reviews</h2>
+        </div>
+        
+        <div class="review-slider-container">
+            <div class="review-slide active"><img src="dental-review1.png" alt="Google Review 1" class="google-review-img"></div>
+            <div class="review-slide"><img src="dental-review2.png" alt="Google Review 2" class="google-review-img"></div>
+            <div class="review-slide"><img src="dental-review3.png" alt="Google Review 3" class="google-review-img"></div>
+            <div class="review-slide"><img src="dental-review4.png" alt="Google Review 4" class="google-review-img"></div>
+            <div class="review-slide"><img src="dental-review5.png" alt="Google Review 5" class="google-review-img"></div>
+            <div class="review-slide"><img src="dental-review6.png" alt="Google Review 6" class="google-review-img"></div>
+        </div>
+        
+        <div class="slider-dots">
+            <span class="dot active"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+        </div>
+    </section>
+
+    <!-- Footer Module -->
+    <footer>
+        <div class="footer-grid">
+            <div>
+                <h3>DR. ADI'S MULTISPECIALITY DENTAL CLINIC</h3>
+                <p>Beside Vijetha Supermarket, Sri Ram Nagar, Moti Nagar, Hyderabad, 500114.</p>
+            </div>
+            <div>
+                <h3>Clinic Hours</h3>
+                <p>Mon - Sat: 10:00 AM – 2:00 PM, 5:00 PM – 9:00 PM<br>Sunday: Closed</p>
+            </div>
+        </div>
+        <div class="footer-credit">
+            <p>&copy; 2026 Designed & Engineered by Teja Agency</p>
+        </div>
+    </footer>
+
+    <!-- ==========================================================================
+       9. 5-SECOND AUTO-ROTATION SLIDER ENGINE
+       ========================================================================== -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const slides = document.querySelectorAll(".review-slide");
+            const dots = document.querySelectorAll(".dot");
+            let currentSlide = 0;
+            const loopInterval = 5000; 
+
+            function changeSlide(nextSlideIndex) {
+                slides[currentSlide].classList.remove("active");
+                dots[currentSlide].classList.remove("active");
+
+                currentSlide = nextSlideIndex;
+
+                slides[currentSlide].classList.add("active");
+                dots[currentSlide].classList.add("active");
+            }
+
+            function autoLoop() {
+                let nextIndex = (currentSlide + 1) % slides.length;
+                changeSlide(nextIndex);
+            }
+
+            let slideTimer = setInterval(autoLoop, loopInterval);
+
+            dots.forEach((dot, index) => {
+                dot.addEventListener("click", () => {
+                    clearInterval(slideTimer);
+                    changeSlide(index);
+                    slideTimer = setInterval(autoLoop, loopInterval);
+                });
+            });
+        });
+    </script>
+</body>
+</html>
 
